@@ -1,7 +1,7 @@
 import pygetwindow as gw
 from programmController import *
 from loginController import *
-import tkinter
+
 
 leagueClient = "LeagueClient.exe"
 riotClient = "RiotClientServices.exe"
