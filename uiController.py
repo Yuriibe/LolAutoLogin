@@ -78,14 +78,20 @@ def createAccountTable(data):
     global tree  # Add this line
     # Create a Frame widget with the desired background color
     frame = Frame(root, bg="#23283c")
-    frame.place(x=100, y=100, width=800, height=400)
+    frame.place(x=100, y=45, width=830, height=800)  # Increase the height of the frame
 
     # Create a Canvas widget with the desired background color
     canvas = Canvas(frame, bg="#23283c", bd=0, highlightthickness=0)
-    canvas.pack(fill=BOTH, expand=True)
+    canvas.pack(side=LEFT, fill=BOTH, expand=True)
+
+    # Create a vertical scrollbar and associate it with the canvas
+    scrollbar = Scrollbar(frame, orient=VERTICAL, command=canvas.yview)
+
+
+    canvas.config(yscrollcommand=scrollbar.set)
 
     # Create a Treeview widget for the table
-    tree = ttk.Treeview(canvas, columns=("Play", "Region", "Username", "IGN", "Rank", "Winrate"), show="headings")
+    tree = ttk.Treeview(canvas, columns=("Play", "Region", "Username", "IGN", "Rank", "Winrate"), show="headings", height=20)  # Set a fixed height
 
     # Set the column headings
     tree.heading("Play", text="Play", anchor=W)
@@ -96,12 +102,14 @@ def createAccountTable(data):
     tree.heading("Winrate", text="Winrate", anchor=W)
 
     # Set the column widths
-    tree.column("Play", width=150, anchor=W)
-    tree.column("Region", width=50, anchor=W)
-    tree.column("Username", width=100, anchor=W)
-    tree.column("IGN", width=150, anchor=W)
-    tree.column("Rank", width=50, anchor=W)
-    tree.column("Winrate", width=100, anchor=W)
+    total_width = 830
+    column_width = total_width // 6
+    tree.column("Play", width=column_width, anchor=W)
+    tree.column("Region", width=column_width, anchor=W)
+    tree.column("Username", width=column_width, anchor=W)
+    tree.column("IGN", width=column_width, anchor=W)
+    tree.column("Rank", width=column_width, anchor=W)
+    tree.column("Winrate", width=column_width, anchor=W)
 
     # Insert data into the table
     for i, account in enumerate(data):
@@ -113,10 +121,19 @@ def createAccountTable(data):
     # Position and pack the Treeview widget into the window
     canvas.create_window((0, 0), window=tree, anchor=NW)
 
+    # Update the canvas scroll region
+    canvas.config(scrollregion=canvas.bbox("all"))
+
     # Style the Treeview widget
     style = ttk.Style()
+    style.theme_use("clam")
     style.configure("Treeview", background="#23283c", foreground="white", fieldbackground="#23283c", font=("Arial", 12))
-    style.configure("Treeview.Heading", background="#23283c", foreground="white", fieldbackground="#23283c", font=("Arial", 14, "bold"))
+    style.configure("Treeview.Heading", background="#23283c", foreground="white", font=("Arial", 14, "bold"))
+    style.map('Treeview.Heading', background=[('active', '#23283c')])  # Set the background color of the active heading
+
+
+
+
 
 
 
