@@ -132,11 +132,6 @@ def createAccountTable(data):
     style.map('Treeview.Heading', background=[('active', '#23283c')])  # Set the background color of the active heading
 
 
-
-
-
-
-
 def assign_index(index):
     global selected_index
     selected_index = index
