@@ -1,8 +1,8 @@
-import tkinter
 from tkinter import *
 from tkinter import ttk
 from loginData import userData
-
+from main import main
+import threading
 root = Tk()
 root.configure(bg='#23283c')
 windowWidth = 1000
@@ -11,7 +11,7 @@ root.geometry(f"{windowWidth}x{windowHeight}")
 # Remove the default title bar
 root.overrideredirect(True)
 icon = None
-
+selected_index = None
 
 def close_window():
     root.destroy()
@@ -71,6 +71,7 @@ def play_button_clicked(event):
     item = tree.selection()[0]
     index = tree.index(item)
     print(f"Play button clicked for item: {tree.item(item)['values']} ")
+    main(index)
     return index
 
 
@@ -78,7 +79,7 @@ def createAccountTable(data):
     global tree  # Add this line
     # Create a Frame widget with the desired background color
     frame = Frame(root, bg="#23283c")
-    frame.place(x=100, y=45, width=830, height=800)  # Increase the height of the frame
+    frame.place(x=100, y=45, width=830, height=450)
 
     # Create a Canvas widget with the desired background color
     canvas = Canvas(frame, bg="#23283c", bd=0, highlightthickness=0)
@@ -86,8 +87,6 @@ def createAccountTable(data):
 
     # Create a vertical scrollbar and associate it with the canvas
     scrollbar = Scrollbar(frame, orient=VERTICAL, command=canvas.yview)
-
-
     canvas.config(yscrollcommand=scrollbar.set)
 
     # Create a Treeview widget for the table
@@ -116,7 +115,7 @@ def createAccountTable(data):
         tree.insert("", i, values=(account["play"], account["region"], account["username"], account["ign"], "", ""),
                     tags=("play_button",))
 
-    selected_index = None
+
     tree.tag_bind("play_button", "<ButtonRelease-1>", lambda event: assign_index(play_button_clicked(event)))
     # Position and pack the Treeview widget into the window
     canvas.create_window((0, 0), window=tree, anchor=NW)
@@ -254,7 +253,15 @@ taskbar_window.protocol('WM_DELETE_WINDOW', restore_window)
 taskbar_window.bind('<Map>', restore_window)
 taskbar_window.iconbitmap('images/titlebar.ico')
 
-createAccountTable(userData)
-createCustomTitlebar()
+def createUI():
+    createAccountTable(userData)
+    createCustomTitlebar()
 
-root.mainloop()
+    # Create a new thread to run the main() function
+    main_thread = threading.Thread(target=main, args=(selected_index,))
+
+    main_thread.start()
+
+    root.mainloop()
+createUI()
+
