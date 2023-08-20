@@ -112,7 +112,7 @@ def createAccountTable(data):
 
     # Insert data into the table
     for i, account in enumerate(data):
-        tree.insert("", i, values=(account["play"], account["region"], account["username"], account["ign"], "", ""),
+        tree.insert("", i, values=(account["play"], account["region"], account["username"], account["ign"], account['rank'], ""),
                     tags=("play_button",))
 
 
@@ -163,7 +163,7 @@ def updateAccountTable():
 
     # Insert the updated data into the Treeview widget
     for i, account in enumerate(userData):
-        tree.insert("", i, values=(account["play"], account["region"], account["username"], account["ign"], "", ""),
+        tree.insert("", i, values=(account["play"], account["region"], account["username"], account["ign"], account['rank'], ''),
                     tags=("play_button",))
 def createUserDataInput(addAcountModal):
     def gather_inputs():
@@ -180,9 +180,9 @@ def createUserDataInput(addAcountModal):
             "password": password_value,
             "summoner": summoner_value,
             "region": region_value,
-            "ign": "test",
-         #   "rank": "iron V",
-          #  "winrate": "0%"
+            "ign": summoner_value,
+            "rank": '',
+            "winrate": ''
         }
 
         userData.append(enteredUserData)
