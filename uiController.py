@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from loginData import userData
-from main import main
+from clientController import main
 import threading
 root = Tk()
 root.configure(bg='#23283c')
@@ -263,5 +263,5 @@ def createUI():
     main_thread.start()
 
     root.mainloop()
-createUI()
+
 
